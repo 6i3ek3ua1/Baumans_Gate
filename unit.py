@@ -37,48 +37,54 @@ class Unit:
             return 1
         cost = self.params['cost_walk']
         if x == 0:
-            for i in range(self.coord[0], self.coord[0]+y):
-                if field[i][self.coord[1]] == "@":
-                    cost -= 2
-                elif field[i][self.coord[1]] == "#":
-                    cost -= 1.5
-                elif field[i][self.coord[1]] == "!":
-                    cost -= 1.2
+            if self.coord[0] + y >= 0:
+                for i in range(self.coord[0], self.coord[0]+y):
+                    if field[i][self.coord[1]] == "@":
+                        cost -= 2
+                    elif field[i][self.coord[1]] == "#":
+                        cost -= 1.5
+                    elif field[i][self.coord[1]] == "!":
+                        cost -= 1.2
+                    else:
+                        cost -= 1
+                if cost < 0:
+                    return 0
                 else:
-                    cost -= 1
-            if cost < 0:
-                return 0
+                    return (self.coord[1], self.coord[0] + y, cost)
             else:
-                return (self.coord[1], self.coord[0] + y, cost)
+                raise IndexError
         elif y == 0:
-            if x > 0:
-                for i in range(self.coord[1], x + self.coord[1]):
-                    if field[self.coord[0]][i] == "@":
-                        cost -= 2
-                    elif field[self.coord[0]][i] == "#":
-                        cost -= 1.5
-                    elif field[self.coord[0]][i] == "!":
-                        cost -= 1.2
+            if self.coord[1] + x > 0:
+                if x > 0:
+                    for i in range(self.coord[1], x + self.coord[1]):
+                        if field[self.coord[0]][i] == "@":
+                            cost -= 2
+                        elif field[self.coord[0]][i] == "#":
+                            cost -= 1.5
+                        elif field[self.coord[0]][i] == "!":
+                            cost -= 1.2
+                        else:
+                            cost -= 1
+                    if cost < 0:
+                        return 0
                     else:
-                        cost -= 1
-                if cost < 0:
-                    return 0
+                        return (self.coord[1] + x, self.coord[0], cost)
                 else:
-                    return (self.coord[1] + x, self.coord[0], cost)
+                    for i in range(self.coord[1] + x, self.coord[1]):
+                        if field[self.coord[0]][i] == "@":
+                            cost -= 2
+                        elif field[self.coord[0]][i] == "#":
+                            cost -= 1.5
+                        elif field[self.coord[0]][i] == "!":
+                            cost -= 1.2
+                        else:
+                            cost -= 1
+                    if cost < 0:
+                        return 0
+                    else:
+                        return (self.coord[1] + x, self.coord[0], cost)
             else:
-                for i in range(self.coord[1] + x, self.coord[1]):
-                    if field[self.coord[0]][i] == "@":
-                        cost -= 2
-                    elif field[self.coord[0]][i] == "#":
-                        cost -= 1.5
-                    elif field[self.coord[0]][i] == "!":
-                        cost -= 1.2
-                    else:
-                        cost -= 1
-                if cost < 0:
-                    return 0
-                else:
-                    return (self.coord[1] + x, self.coord[0], cost)
+                raise IndexError
 
     def gamemove(self, field):
         if self.params['hp'] != 0:
