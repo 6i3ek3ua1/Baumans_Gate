@@ -26,6 +26,7 @@ class GameMenu:
                 print(f"Имя {units[i].name}")
                 print(f"Здоровье: {units[i].params['hp']}")
                 print(f"Номер по порядку: {i}")
+                print(f"wr_sym = {units[i].write_sym}")
 
             print("\nБойцы врага\n")
             for item in bot.units:

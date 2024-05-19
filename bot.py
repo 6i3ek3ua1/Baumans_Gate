@@ -3,31 +3,36 @@ from unit import Unit
 
 class Bot:
     def __init__(self):
-        self.units = [Unit("Мечник1")]
+        unit = Unit("Мечник1")
+        unit.write_sym = "s"
+        self.units = [unit]
 
     def create_bot_unit(self, difficulty, field):
         if difficulty == 1:
             unit1 = Unit("Лучник1")
             self.units.append(unit1)
+            unit1.write_sym = "a"
         elif difficulty == 2:
             unit1 = Unit("Лучник1")
+            unit1.write_sym = "a"
             self.units.append(unit1)
             unit2 = Unit("Всадник1")
+            unit2.write_sym = "h"
             self.units.append(unit2)
         elif difficulty != 0:
             raise ValueError("Такой сложности нет")
         for item in self.units:
-            field.set_bot_unit(item.name, item)
+            field.set_bot_unit(item.write_sym, item)
 
     def move(self, field, name):
         coords = self.units[name].coord
         if field.field[coords[0]-1][coords[1]] == '*':
-            field.set_new_coords(coords[1], coords[0]-1, self.units[name].name, self.units[name])
+            field.set_new_coords(coords[1], coords[0]-1, self.units[name].write_sym, self.units[name])
         else:
             ind = 1
             while field.field[coords[0]-ind][coords[1]] != '*':
                 ind += 1
-            field.set_new_coords(coords[1], coords[0]-ind, self.units[name].name, self.units[name])
+            field.set_new_coords(coords[1], coords[0]-ind, self.units[name].write_sym, self.units[name])
 
     def check_around(self, units, name, field):
         min_range = 1000
@@ -50,7 +55,7 @@ class Bot:
             if self.units[name].coord[1] == tow_enemy.coord[1]:
                 self.move(field, name)
             if field.field[self.units[name].coord[0]][tow_enemy.coord[1]] == '*':
-                field.set_new_coords(tow_enemy.coord[1], self.units[name].coord[0], self.units[name].name, self.units[name])
+                field.set_new_coords(tow_enemy.coord[1], self.units[name].coord[0], self.units[name].write_sym, self.units[name])
             else:
                 self.move(field, name)
         else:
