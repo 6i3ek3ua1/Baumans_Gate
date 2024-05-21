@@ -1,4 +1,4 @@
-from unit import Unit
+from units.unit import Unit
 
 
 class Bot:
@@ -21,8 +21,10 @@ class Bot:
             self.units.append(unit2)
         elif difficulty != 0:
             raise ValueError("Такой сложности нет")
+        coord = 3
         for item in self.units:
-            field.set_bot_unit(item.write_sym, item)
+            field.set_bot_unit(item.write_sym, item, coord)
+            coord += 4
 
     def move(self, field, name):
         coords = self.units[name].coord
