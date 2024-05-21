@@ -1,7 +1,7 @@
 from units.unit import Unit
 
 
-class Sworder(Unit):
+class Swordsman(Unit):
     def __init__(self, name):
         super().__init__(name)
         self.write_sym = "M"

@@ -148,24 +148,3 @@ class Unit:
 
     def die(self, field):
         field.field[self.coord[0]][self.coord[1]] = 'D'
-
-
-class Wizard(Unit):
-    def __init__(self, name):
-        super().__init__(name)
-        self.write_sym = "М"
-
-    def set_params(self):
-        if self.name == "Маг":
-            self.params['hp'] = 40
-            self.params['attack'] = 10
-            self.params['attack_range_min'] = 5
-            self.params['attack_range_max'] = 8
-            self.params['armor'] = 0
-            self.params['cost_walk'] = 5
-            self.params['alive'] = 1
-        else:
-            raise ValueError("Такого типа юнитов не существует")
-
-    def mage_attack(self):
-        pass

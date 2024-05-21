@@ -34,6 +34,7 @@ class GameMenu:
             for item in self.bot.units:
                 print(f'Имя {item.name}')
                 print(f"Здоровье: {item.params['hp']}")
+                print(f"Броня: {item.params['armor']}")
 
 
             chose = int(input("Выберите, за какого юнита будет совершено действие: "))
@@ -41,8 +42,10 @@ class GameMenu:
 
             print("----------Ход противника!-----------\n")
             alive = self.bot.if_die(self.field)
+            if count > len(self.bot.units) - 1:
+                count = 0
             if alive == 1:
-                check_agr = self.bot.check_around(self.units, count, self.field)
+                check_agr = self.bot.check_around(self.units, count)
                 if check_agr != 0:
                     self.bot.move_around(count, self.field, check_agr[0], check_agr[1])
                     count -= 1
@@ -61,6 +64,8 @@ class GameMenu:
                 for item in self.bot.units:
                     print(f'Имя {item.name}')
                     print(f"Здоровье: {item.params['hp']}\n")
+
+            self.field.display()
 
             print("----------Ваш ход!-----------\n")
 

@@ -1,6 +1,8 @@
 from units.archer import Archer
-from units.sworder import Sworder
+from units.swordsman import Swordsman
 from units.horseman import Horseman
+from units.wizard import Wizard
+from units.warriorwizard import WarriorWizard
 
 
 class Shop:
@@ -15,8 +17,10 @@ class Shop:
               "Лучник - 12\n"
               "Солдаты этого типа: дл. лук, кор. лук, лучник\n"
               "ТИП: \n"
-              "Всадник - 10\n"
-              "Солдаты этого типа: всадник, рыцарь, кирасир\n")
+              "Всадник - 15\n"
+              "Солдаты этого типа: всадник, рыцарь, кирасир\n"
+              "Колдун - 17\n"
+              "Маг-воин - 20\n")
 
     def buy_unit(self, field):
         count_of_units = 0
@@ -26,7 +30,7 @@ class Shop:
             type = input("Введите тип солдата: ")
             if type == "Мечник":
                 name = input("Введите имя солдата: ")
-                unit = Sworder(name)
+                unit = Swordsman(name)
                 self.units.append(unit)
                 self.budget -= 10
                 field.set_unit(unit, unit.write_sym)
@@ -45,6 +49,24 @@ class Shop:
                     unit = Horseman(name)
                     self.units.append(unit)
                     self.budget -= 15
+                    field.set_unit(unit, unit.write_sym)
+                else:
+                    print("Недостаточно денег")
+            elif type == "Колдун":
+                if self.budget >= 17:
+                    name = input("Введите имя солдата: ")
+                    unit = Wizard(name)
+                    self.units.append(unit)
+                    self.budget -= 17
+                    field.set_unit(unit, unit.write_sym)
+                else:
+                    print("Недостаточно денег")
+            elif type == "Маг-воин":
+                if self.budget >= 20:
+                    name = input("Введите имя солдата: ")
+                    unit = WarriorWizard(name)
+                    self.units.append(unit)
+                    self.budget -= 20
                     field.set_unit(unit, unit.write_sym)
                 else:
                     print("Недостаточно денег")
