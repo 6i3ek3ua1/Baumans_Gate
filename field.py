@@ -1,10 +1,23 @@
+import json
 import random
+import os
 
 
 class Field:
     def __init__(self):
-        self.field = [['*' for i in range(15)] for i in range(15)]
-        self.set_pr()
+        chose = int(input('Игра будет вестись:\n'
+                          '1 -  на новой карте\n'
+                          '2 - сохранённой карте?\n'))
+        if chose == 1:
+            self.field = [['*' for i in range(15)] for i in range(15)]
+            self.set_pr()
+        elif chose == 2:
+            self.saved_fields = os.listdir('map_editor\\maps')
+            name = input("Выберите карту, на которой желаете играть (введите название без .txt): ")
+            with open(f"map_editor\\maps\\{name}.txt", "r", encoding="utf-8") as f:
+                self.json_field = json.load(f)
+                self.field = self.json_field['field']
+                self.new_sym = self.json_field['new_symbols']
 
     def set_pr(self):
         for i in range(1, 14):

@@ -33,7 +33,7 @@ class Unit:
         else:
             raise ValueError("Такого типа юнитов не существует")
 
-    def movement(self, x, y, field):
+    def movement(self, x, y, field, new_symbols):
         if field[self.coord[0]+y][self.coord[1]+x] != '*':
             return 1
         cost = self.params['cost_walk']
@@ -46,8 +46,12 @@ class Unit:
                         cost -= 1.5
                     elif field[i][self.coord[1]] == "!":
                         cost -= 1.2
-                    else:
+                    elif field[i][self.coord[1]] == "*":
                         cost -= 1
+                    else:
+                        for key in new_symbols.keys():
+                            if field[i][self.coord[1]] == key:
+                                cost -= new_symbols[key]
                 if cost < 0:
                     return 0
                 else:
@@ -64,8 +68,12 @@ class Unit:
                             cost -= 1.5
                         elif field[self.coord[0]][i] == "!":
                             cost -= 1.2
-                        else:
+                        elif field[self.coord[0]][i] == "*":
                             cost -= 1
+                        else:
+                            for key in new_symbols.keys():
+                                if field[self.coord[0]][i] == key:
+                                    cost -= new_symbols[key]
                     if cost < 0:
                         return 0
                     else:
@@ -78,8 +86,12 @@ class Unit:
                             cost -= 1.5
                         elif field[self.coord[0]][i] == "!":
                             cost -= 1.2
-                        else:
+                        elif field[self.coord[0]][i] == "*":
                             cost -= 1
+                        else:
+                            for key in new_symbols.keys():
+                                if field[self.coord[0]][i] == key:
+                                    cost -= new_symbols[key]
                     if cost < 0:
                         return 0
                     else:
@@ -97,7 +109,7 @@ class Unit:
                 coord_y = int(input("Введите смещение по оси Y: "))
                 coord_x = 0
             try:
-                new_coords = self.movement(coord_x, coord_y, field.field)
+                new_coords = self.movement(coord_x, coord_y, field.field, field.new_sym)
                 if new_coords == 0:
                     print("Недостаточно очков для перемещения")
                 elif new_coords == 1:
@@ -148,3 +160,13 @@ class Unit:
 
     def die(self, field):
         field.field[self.coord[0]][self.coord[1]] = 'D'
+
+
+class NewUnit(Unit):
+    def __init__(self, name):
+        self.params = {}
+        self.coord = []
+        self.name = name
+        self.mem_x = 0
+        self.mem_y = 0
+        self.write_sym = 'U'

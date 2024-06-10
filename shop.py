@@ -9,6 +9,7 @@ class Shop:
     def __init__(self):
         self.budget = int(input("Введите бюджет закупки: "))
         self.units = []
+        self.count_of_units = 0
         print("Стоимости солдат:\n"
               "ТИП: \n"
               "Мечник - 10\n"
@@ -22,11 +23,10 @@ class Shop:
               "Колдун - 17\n"
               "Маг-воин - 20\n")
 
-    def buy_unit(self, field):
-        count_of_units = 0
+    def buy_unit(self, field, user):
         if self.budget < 10:
             raise ValueError("Дай денек")
-        while self.budget >= 10 and count_of_units <= 3:
+        while self.budget >= 10 and self.count_of_units <= 3:
             type = input("Введите тип солдата: ")
             if type == "Мечник":
                 name = input("Введите имя солдата: ")
@@ -34,6 +34,7 @@ class Shop:
                 self.units.append(unit)
                 self.budget -= 10
                 field.set_unit(unit, unit.write_sym)
+                self.count_of_units += 1
             elif type == "Лучник":
                 if self.budget >= 12:
                     name = input("Введите имя солдата: ")
@@ -41,6 +42,7 @@ class Shop:
                     self.units.append(unit)
                     self.budget -= 12
                     field.set_unit(unit, unit.write_sym)
+                    self.count_of_units += 1
                 else:
                     print("Недостаточно денег")
             elif type == "Всадник":
@@ -50,6 +52,7 @@ class Shop:
                     self.units.append(unit)
                     self.budget -= 15
                     field.set_unit(unit, unit.write_sym)
+                    self.count_of_units += 1
                 else:
                     print("Недостаточно денег")
             elif type == "Колдун":
@@ -59,6 +62,7 @@ class Shop:
                     self.units.append(unit)
                     self.budget -= 17
                     field.set_unit(unit, unit.write_sym)
+                    self.count_of_units += 1
                 else:
                     print("Недостаточно денег")
             elif type == "Маг-воин":
@@ -68,6 +72,18 @@ class Shop:
                     self.units.append(unit)
                     self.budget -= 20
                     field.set_unit(unit, unit.write_sym)
+                    self.count_of_units += 1
                 else:
                     print("Недостаточно денег")
+        self.add_new_unit(user, field)
         return self.units
+
+    def add_new_unit(self, user, field):
+        if user.new_unit != 0:
+            if self.count_of_units <= 3:
+                choise = int(input(f"Желаете ли добавить нового юнита {user.new_unit.name} на поле?\n"
+                                   f"0 - да\n"
+                                   f"1 - нет\n"))
+                if choise == 0:
+                    self.units.append(user.new_unit)
+                    field.set_unit(user.new_unit, user.new_unit.write_sym)

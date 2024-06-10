@@ -1,24 +1,63 @@
+import pickle
 from field import Field
 from bot import Bot
 from shop import Shop
+from user import User
+from town.town import Town
 
 
 class GameMenu:
     def __init__(self):
-        self.field = Field()
-        print("Добро пожаловать в город, путник. Время защищать!")
-        self.field.display()
-        print("Введите уровень сложности:\n"
-              "0 - лёгкий\n"
-              "1 - средний\n"
-              "2 - ...ладно\n")
-        self.diff = int(input())
-        self.bot = Bot()
-        self.bot.create_bot_unit(self.diff, self.field)
-        self.shop = Shop()
-        self.units = self.shop.buy_unit(self.field)
-        self.field.display()
-        self.game_process()
+        print("Добро пожаловать в город, путник. Время защищать!\n")
+        choose = int(input("Желаете авторизоваться или создать нового пользователя?\n"
+                           "0 - авторизоваться\n"
+                           "1 - зарегестрироваться\n"))
+        if choose == 0:
+            name = input("Введите логин\n")
+            password = input("Введите пароль\n")
+            with open(f"users\\{name}.pickle", "rb") as file:
+                self.user = pickle.load(file)
+                if self.user.password == password:
+                    self.town = Town(self.user)
+                    self.field = Field()
+                    self.field.display()
+                    print("Введите уровень сложности:\n"
+                          "0 - лёгкий\n"
+                          "1 - средний\n"
+                          "2 - ...ладно\n")
+                    self.diff = int(input())
+                    self.bot = Bot()
+                    self.bot.create_bot_unit(self.diff, self.field)
+                    self.shop = Shop()
+                    self.units = self.shop.buy_unit(self.field, self.user)
+                    self.field.display()
+                    self.user.getting_buffs(self.units)
+                    self.user.save()
+                    self.game_process()
+                else:
+                    print("Пароль неверный\n")
+        else:
+            name = input("Введите логин\n")
+            password = input("Введите пароль\n")
+            self.user = User(name, password)
+            self.user.wallet['wood'] = 20
+            self.user.wallet['rock'] = 20
+            self.town = Town(self.user)
+            self.field = Field()
+            self.field.display()
+            print("Введите уровень сложности:\n"
+                  "0 - лёгкий\n"
+                  "1 - средний\n"
+                  "2 - ...ладно\n")
+            self.diff = int(input())
+            self.bot = Bot()
+            self.bot.create_bot_unit(self.diff, self.field)
+            self.shop = Shop()
+            self.units = self.shop.buy_unit(self.field, self.user)
+            self.field.display()
+            self.user.getting_buffs(self.units)
+            self.user.save()
+            self.game_process()
 
     def game_process(self):
         count = 0

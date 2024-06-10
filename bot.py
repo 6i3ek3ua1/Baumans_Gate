@@ -57,7 +57,8 @@ class Bot:
             if self.units[count].coord[1] == tow_enemy.coord[1]:
                 self.move(field, count)
             elif field.field[self.units[count].coord[0]][tow_enemy.coord[1]] == '*':
-                field.set_new_coords(tow_enemy.coord[1], self.units[count].coord[0], self.units[count].write_sym, self.units[count])
+                field.set_new_coords(tow_enemy.coord[1], self.units[count].coord[0], self.units[count].write_sym,
+                                     self.units[count])
             else:
                 self.move(field, count)
         else:
