@@ -30,6 +30,20 @@ class Unit:
             self.params['armor'] = 10
             self.params['cost_walk'] = 5
             self.params['alive'] = 1
+        elif self.name == "test":
+            self.params['hp'] = 10000
+            self.params['attack'] = 10000
+            self.params['attack_range'] = 10000
+            self.params['armor'] = 10000
+            self.params['cost_walk'] = 10000
+            self.params['alive'] = 10000
+        elif self.name == "Test":
+            self.params['hp'] = 1
+            self.params['attack'] = 1
+            self.params['attack_range'] = 1
+            self.params['armor'] = 0
+            self.params['cost_walk'] = 1
+            self.params['alive'] = 1
         else:
             raise ValueError("Такого типа юнитов не существует")
 
@@ -52,7 +66,7 @@ class Unit:
                         for key in new_symbols.keys():
                             if field[i][self.coord[1]] == key:
                                 cost -= new_symbols[key]
-                if cost < 0:
+                if cost <= 0:
                     return 0
                 else:
                     return (self.coord[1], self.coord[0] + y, cost)
@@ -74,7 +88,7 @@ class Unit:
                             for key in new_symbols.keys():
                                 if field[self.coord[0]][i] == key:
                                     cost -= new_symbols[key]
-                    if cost < 0:
+                    if cost <= 0:
                         return 0
                     else:
                         return (self.coord[1] + x, self.coord[0], cost)
@@ -92,7 +106,7 @@ class Unit:
                             for key in new_symbols.keys():
                                 if field[self.coord[0]][i] == key:
                                     cost -= new_symbols[key]
-                    if cost < 0:
+                    if cost <= 0:
                         return 0
                     else:
                         return (self.coord[1] + x, self.coord[0], cost)
@@ -112,6 +126,7 @@ class Unit:
                 new_coords = self.movement(coord_x, coord_y, field.field, field.new_sym)
                 if new_coords == 0:
                     print("Недостаточно очков для перемещения")
+                    return "Недостаточно очков для перемещения"
                 elif new_coords == 1:
                     print("Юнит не может стоят здесь")
                 else:
@@ -120,8 +135,10 @@ class Unit:
                 field.display()
             except IndexError:
                 print('Не выходите за карту')
+                return 'Не выходите за карту'
 
     def game(self, field, bot):
+        move = 0
         if self.params['hp'] != 0:
             enemy = self.check_attack(bot)
             if enemy != 0:
@@ -130,11 +147,13 @@ class Unit:
                 if chose_att == "да":
                     self.attack(enemy)
                     print(f"Вражеский боец {enemy.name} был атакован")
+                    move = "Вражеский боец был атакован"
                     field.display()
                 else:
-                    self.gamemove(field)
+                    move = self.gamemove(field)
             else:
-                self.gamemove(field)
+                move = self.gamemove(field)
+        return move
 
     def check_attack(self, bot):
         enemy_units = bot.units

@@ -11,6 +11,7 @@ class Field:
         if chose == 1:
             self.field = [['*' for i in range(15)] for i in range(15)]
             self.set_pr()
+            self.new_sym = {'0': 0}
         elif chose == 2:
             self.saved_fields = os.listdir('map_editor\\maps')
             name = input("Выберите карту, на которой желаете играть (введите название без .txt): ")

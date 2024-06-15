@@ -25,7 +25,7 @@ class GameMenu:
                           "0 - лёгкий\n"
                           "1 - средний\n"
                           "2 - ...ладно\n")
-                    self.diff = int(input())
+                    self.diff = input()
                     self.bot = Bot()
                     self.bot.create_bot_unit(self.diff, self.field)
                     self.shop = Shop()
@@ -33,7 +33,7 @@ class GameMenu:
                     self.field.display()
                     self.user.getting_buffs(self.units)
                     self.user.save()
-                    self.game_process()
+                    self.result = 0
                 else:
                     print("Пароль неверный\n")
         else:
@@ -49,7 +49,7 @@ class GameMenu:
                   "0 - лёгкий\n"
                   "1 - средний\n"
                   "2 - ...ладно\n")
-            self.diff = int(input())
+            self.diff = input()
             self.bot = Bot()
             self.bot.create_bot_unit(self.diff, self.field)
             self.shop = Shop()
@@ -57,7 +57,7 @@ class GameMenu:
             self.field.display()
             self.user.getting_buffs(self.units)
             self.user.save()
-            self.game_process()
+            self.result = 0
 
     def game_process(self):
         count = 0
@@ -77,7 +77,7 @@ class GameMenu:
 
 
             chose = int(input("Выберите, за какого юнита будет совершено действие: "))
-            self.units[chose].game(self.field, self.bot)
+            self.costing = self.units[chose].game(self.field, self.bot)
 
             print("----------Ход противника!-----------\n")
             alive = self.bot.if_die(self.field)
@@ -109,8 +109,8 @@ class GameMenu:
             print("----------Ваш ход!-----------\n")
 
             if len(self.bot.units) == 0:
-                print("---------------Вы победили------------------\n"
-                      "\tвеликолепная доблесть")
+                self.result = "---------------Вы победили------------------\nвеликолепная доблесть"
+                print(self.result)
                 break
 
             for item in self.units:
@@ -119,6 +119,23 @@ class GameMenu:
                     self.units.remove(item)
 
             if len(self.units) == 0:
-                print("---------------Вы проиграли------------------\n"
-                      "\tбессмысленная жертва")
+                self.result = "---------------Вы проиграли------------------\nбессмысленная жертва"
+                print(self.result)
                 break
+
+    def test_cost(self):
+        chose = int(input("Выберите, за какого юнита будет совершено действие: "))
+        self.costing = self.units[chose].game(self.field, self.bot)
+
+    def test_attack(self):
+        chose = int(input("Выберите, за какого юнита будет совершено действие: "))
+        self.costing = self.units[chose].game(self.field, self.bot)
+
+    def test_death(self):
+        chose = int(input("Выберите, за какого юнита будет совершено действие: "))
+        self.costing = self.units[chose].game(self.field, self.bot)
+        chose = int(input("Выберите, за какого юнита будет совершено действие: "))
+        self.costing = self.units[chose].game(self.field, self.bot)
+        alive = self.bot.if_die(self.field)
+        self.field.display()
+        return alive

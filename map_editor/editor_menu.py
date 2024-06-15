@@ -20,9 +20,9 @@ class Menu:
                            "0 - выйти из программы\n"))
         while status != 0:
             if status == 1:
-                new_map = CreatorMap()
+                self.new_map = CreatorMap()
             elif status == 2:
-                new_map = ChangeMap()
+                self.new_map = ChangeMap()
             elif status == 3:
                 self.delete_map()
             status = int(input("Выберите:\n"

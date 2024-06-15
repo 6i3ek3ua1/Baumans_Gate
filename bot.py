@@ -8,19 +8,24 @@ class Bot:
         self.units = [unit]
 
     def create_bot_unit(self, difficulty, field):
-        if difficulty == 1:
-            unit1 = Unit("Лучник1")
-            self.units.append(unit1)
-            unit1.write_sym = "a"
-        elif difficulty == 2:
-            unit1 = Unit("Лучник1")
-            unit1.write_sym = "a"
-            self.units.append(unit1)
-            unit2 = Unit("Всадник1")
-            unit2.write_sym = "h"
-            self.units.append(unit2)
-        elif difficulty != 0:
-            raise ValueError("Такой сложности нет")
+        if difficulty == "test" or difficulty == "Test":
+            unit1 = Unit(difficulty)
+            self.units[0] = unit1
+        else:
+            difficulty = int(difficulty)
+            if difficulty == 1:
+                unit1 = Unit("Лучник1")
+                self.units.append(unit1)
+                unit1.write_sym = "a"
+            elif difficulty == 2:
+                unit1 = Unit("Лучник1")
+                unit1.write_sym = "a"
+                self.units.append(unit1)
+                unit2 = Unit("Всадник1")
+                unit2.write_sym = "h"
+                self.units.append(unit2)
+            elif difficulty != 0:
+                raise ValueError("Такой сложности нет")
         coord = 3
         for item in self.units:
             field.set_bot_unit(item.write_sym, item, coord)
@@ -47,10 +52,16 @@ class Bot:
             if prosp_range < min_range:
                 min_range = prosp_range
                 tow_enemy = item
-        if min_range <= 5:
-            return (tow_enemy, min_range)
+        if self.units[0].name == 'test':
+            if min_range <= 10000:
+                return (tow_enemy, min_range)
+            else:
+                return 0
         else:
-            return 0
+            if min_range <= 10000:
+                return (tow_enemy, min_range)
+            else:
+                return 0
 
     def move_around(self, count, field, tow_enemy, min_range):
         if min_range > self.units[count].params['attack_range']:
