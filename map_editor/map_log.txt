@@ -1,0 +1,2 @@
+editor_menu.py[LINE:31]# INFO     [2024-06-16 17:48:22,186]  Создана карта keklol
+editor_menu.py[LINE:34]# INFO     [2024-06-16 17:51:21,091]  Изменена карта keklol

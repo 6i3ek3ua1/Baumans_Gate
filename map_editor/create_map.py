@@ -18,6 +18,7 @@ class CreatorMap:
             self.create_base_field()
         print("Полученное поле:")
         self.display()
+        self.name = 0
         self.saved = self.save_in_file()
 
     def set_pr(self):
@@ -62,8 +63,8 @@ class CreatorMap:
             print(' '.join(row))
 
     def save_in_file(self):
-        name = input('Введите название сохранённого поля: ')
+        self.name = input('Введите название сохранённого поля: ')
         data = {'field': self.field, 'new_symbols': self.new_symbols}
-        with open(f"maps\\{name}.txt", 'w') as file:
+        with open(f"maps\\{self.name}.txt", 'w') as file:
             json.dump(data, file)
         return "карта создана"

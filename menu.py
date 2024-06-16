@@ -12,6 +12,7 @@ class GameMenu:
         choose = int(input("Желаете авторизоваться или создать нового пользователя?\n"
                            "0 - авторизоваться\n"
                            "1 - зарегестрироваться\n"))
+        self.units = 0
         if choose == 0:
             name = input("Введите логин\n")
             password = input("Введите пароль\n")
